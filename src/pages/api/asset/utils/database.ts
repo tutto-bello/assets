@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { IAssetsResponse } from "../../../../models/asset-type";
 
-const databasePath = path.join("data", "assets.json");
+const databasePath = path.join(process.cwd(), "tmp", "data", "assets.json");
 
 export function getAssets(): IAssetsResponse[] {
   try {
