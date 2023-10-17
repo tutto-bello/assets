@@ -1,43 +1,77 @@
 import Head from "next/head";
 import Layout from "../components/layout";
-import { useState } from "react";
-import { AssetType } from "../models/project-type";
-import { Status } from "../models/status-enum";
+import { useState, useEffect } from "react";
+import { IAssetsResponse, IAssetType } from "../models/asset-type";
 import Table from "../components/table";
 import AccordionComponent from "../components/accordion";
 import { Box } from "@mui/material";
 import AssetsForm from "../components/assets-form";
-
-const data = [
-  {
-    name: "Confluence",
-    description: "Manage software development assets",
-    quantity: 1,
-    status: Status.Pending,
-    id: "123412412",
-  },
-  {
-    name: "Github",
-    description: "Code hosting platform",
-    quantity: 3,
-    status: Status.Online,
-    id: "123412wgs2",
-  },
-  {
-    name: "Jira",
-    description: "Create issues",
-    quantity: 1,
-    status: Status.Online,
-    id: "12341sdg12",
-  },
-];
+import {
+  fetchAssets,
+  createdAsset,
+  deleteAsset,
+  searchAssetsByName,
+} from "../asset-service";
+import TextInput from "../components/inputs/text-input";
+import SearcuInput from "../components/inputs/search-input";
+import { useGridCsvExport } from "@mui/x-data-grid/internals";
 
 export default function Home() {
-  const [assets, setAssets] = useState<AssetType[]>(data);
+  const [isLoading, setIsLoading] = useState(false);
+  const [assets, setAssets] = useState<IAssetsResponse[]>([]);
+  const [search, setSearch] = useState("");
 
-  const handelAdd = (value: AssetType) => {
-    setAssets([...assets, value]);
+  const handleGetAssests = () => {
+    setIsLoading(true);
+    fetchAssets()
+      .then((data) => {
+        if (data) {
+          setAssets(data);
+        }
+      })
+      .finally(() => setIsLoading(false));
   };
+
+  const handelAddAssets = (value: IAssetType) => {
+    setIsLoading(true);
+    createdAsset(value)
+      .then(() => {
+        handleGetAssests();
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const handelDeleteAssets = (id: string) => {
+    setIsLoading(true);
+    deleteAsset(id)
+      .then(() => {
+        handleGetAssests();
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  const handleSearch = () => {
+    setIsLoading(true);
+    searchAssetsByName(search)
+      .then((data) => {
+        if (data) {
+          setAssets(data);
+        }
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => {
+    handleGetAssests();
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleSearch();
+    }, 800);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   return (
     <>
@@ -50,10 +84,21 @@ export default function Home() {
       <Layout>
         <Box>
           <AccordionComponent title="Add asset">
-            <AssetsForm handelAdd={handelAdd} />
+            <AssetsForm handelAddAssets={handelAddAssets} />
           </AccordionComponent>
         </Box>
-        <Table data={assets} />
+        <Box>
+          <SearcuInput
+            handleChange={setSearch}
+            value={search}
+            placeholder="Search table"
+          />
+        </Box>
+        <Table
+          data={assets}
+          isLoading={isLoading}
+          handelDeleteAssets={handelDeleteAssets}
+        />
       </Layout>
     </>
   );

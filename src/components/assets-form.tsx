@@ -5,12 +5,12 @@ import { Box, Button } from "@mui/material";
 import TextInput from "./inputs/text-input";
 import { STATUS } from "../models/status-enum";
 import SelectInput from "./inputs/select-input";
-import { AssetType } from "../models/project-type";
+import { IAssetType } from "../models/asset-type";
 
 const AssetsForm = ({
-  handelAdd,
+  handelAddAssets,
 }: {
-  handelAdd: (value: AssetType) => void;
+  handelAddAssets: (value: IAssetType) => void;
 }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -34,11 +34,9 @@ const AssetsForm = ({
     status: "",
   };
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: IAssetType) => {
     try {
-      const id = "id" + Math.random().toString(16).slice(2);
-      const newValue = { ...values, id };
-      handelAdd(newValue);
+      handelAddAssets(values);
     } catch (error) {
       console.error(error);
     }
@@ -48,12 +46,12 @@ const AssetsForm = ({
     <Formik
       initialValues={initialValues}
       onSubmit={(values, { resetForm }) => {
-        handleSubmit(values);
+        handleSubmit(values as IAssetType);
         resetForm();
       }}
       validationSchema={validationSchema}
     >
-      {({ isSubmitting, values, errors, handleChange, touched, resetForm }) => (
+      {({ isSubmitting, values, errors, handleChange, touched }) => (
         <Form>
           <Box display="flex" ml={-2} flexWrap="wrap">
             <TextInput

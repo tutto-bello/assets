@@ -1,9 +1,11 @@
 import { Status } from "./status-enum";
 
-export interface AssetType {
+export interface IAssetType {
   name: string;
   description: string;
-  quantity: number;
+  quantity: string;
   status: Status;
+}
+export interface IAssetsResponse extends IAssetType {
   id: string;
 }
