@@ -6,7 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const assets = getAssets();
+    const assets = await getAssets();
     res.status(200).json(assets);
   } catch (error) {
     console.error("Error fetching assets:", error);

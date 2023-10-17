@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     const { name, description, quantity, status }: IAssetType = req.body;
-    const assets = getAssets();
+    const assets = await getAssets();
     const createdAsset: IAssetsResponse = {
       name,
       description,
@@ -18,7 +18,7 @@ export default async function handler(
     };
 
     assets.push(createdAsset);
-    saveAssets(assets);
+    await saveAssets(assets);
     res.status(201).json(createdAsset);
   } else {
     res.status(405).json({ message: "Method Not Allowed" });

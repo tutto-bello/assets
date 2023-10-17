@@ -1,6 +1,5 @@
 import { IAssetsResponse } from "../../../../models/asset-type";
 import { LocalStorage } from "node-localstorage";
-import { Status } from "../../../../models/status-enum";
 
 const localStorage = new LocalStorage("./tmp");
 

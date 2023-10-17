@@ -9,9 +9,8 @@ export default async function handler(
     const {
       query: { name },
     } = req;
-    const assets = getAssets();
+    const assets = await getAssets();
 
-    console.log(name);
     if (name) {
       const filteredAssets = assets.filter((asset) =>
         asset.name.toLowerCase().includes(name.toString().toLowerCase())

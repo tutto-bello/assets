@@ -9,7 +9,7 @@ export default async function handler(
     const {
       query: { id },
     } = req;
-    const assets = getAssets();
+    const assets = await getAssets();
 
     const asset = assets.find((asset) => asset.id === id);
     if (asset) {
