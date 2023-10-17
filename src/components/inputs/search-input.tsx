@@ -23,7 +23,6 @@ const SearcuInput = ({
       <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
         <OutlinedInput
           type="text"
-          inputProps={{ shrink: true }}
           value={value}
           onChange={(e) => handleChange(e.target.value)}
           fullWidth

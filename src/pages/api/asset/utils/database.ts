@@ -11,24 +11,24 @@ const defaultAssets: IAssetsResponse[] = [
     name: "Confluence",
     description: "Manage software development assets",
     quantity: "1",
-    status: Status.Pending,
+    status: "PENDING",
     id: "123412412",
   },
   {
     name: "Github",
     description: "Code hosting platform",
     quantity: "3",
-    status: Status.Online,
+    status: "ONLINE",
     id: "123412wgs2",
   },
   {
     name: "Jira",
     description: "Create issues",
     quantity: "1",
-    status: Status.Online,
+    status: "ONLINE",
     id: "12341sdg12",
   },
-];
+] as IAssetsResponse[];
 
 export function getAssets(): IAssetsResponse[] {
   try {
