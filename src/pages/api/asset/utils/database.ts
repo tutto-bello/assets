@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { IAssetsResponse } from "../../../../models/asset-type";
 
-const databasePath = path.join(process.cwd(), "tmp", "data", "assets.json");
+const databasePath = path.join(process.cwd(), "/tmp", "data", "assets.json");
 
 export function getAssets(): IAssetsResponse[] {
   try {
@@ -16,6 +16,7 @@ export function getAssets(): IAssetsResponse[] {
 }
 
 export function saveAssets(assets: IAssetsResponse[]): void {
+  console.log(databasePath);
   const content = JSON.stringify(assets, null, 2);
   fs.writeFileSync(databasePath, content, "utf-8");
 }
